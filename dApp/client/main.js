@@ -62,6 +62,16 @@ untitled_exchangeprotocol.isActive("555", function(err, res) {
     }
 });
 
+//calling getOffer method
+untitled_exchangeprotocol.getOffer("555", function(err, res) {
+    if (!err) {
+        console.log("Outside getOffer", res);
+        Session.set('getOffer', res);
+    } else {
+        console.log("error", err);
+    }
+});
+
 // Template.test.onCreated(function() {
 //     this.account = web3.eth.accounts;
 // });
@@ -82,5 +92,9 @@ Template.test.helpers({
     'isActive': function() {
          console.log('Inside helpers IsActive with SET', Session.get('isActive'))
          return Session.get('isActive');
+    },
+    'getOffer': function() {
+    	console.log('Inside helpers getOffer with SET', Session.get('getOffer'));
+    	return Session.get('getOffer');
     }
 })
