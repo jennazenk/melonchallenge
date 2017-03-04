@@ -30,12 +30,17 @@
 </head>
 
 <body>
-    <h1>H1 TEST </h1> {{> test}}
+    <h1>Welcome to the Melon challenge exchange !</h1> {{> offer1}}
 </body>
-<template name="test">
-    <h1>Test</h1>
+<template name="offer1">
+    <h2>Order book</h2>
     <br> Account : {{account}}
     <br> Exchange protocol : {{exchange}}
-    <br> Get last offer id {{getLastOfferId}}
+    <br> Get last offer id {{id}}
     <br> IsActive ? {{isActive}}
+    <br> getOwner : {{owner}}
+    <br> BUY : {{buyToken}}
+    <br> Buy Qty : {{buyPrice}}
+    <br> SELL : {{sellToken}}
+    <br> Sell Qty : {{sellPrice}}
 </template>

@@ -1,7 +1,7 @@
-// import { Template } from 'meteor/templating';
-// import { ReactiveVar } from 'meteor/reactive-var';
+import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
 
-// import './main.html';
+import './main.html';
 
 // Template.hello.onCreated(function helloOnCreated() {
 //     // counter starts at 0
@@ -38,63 +38,103 @@
 
 
 
-//instantiation of contract
+//instantiation of contract Exchange Protocol
 var untitled_exchangeprotocolContract = web3.eth.contract([{ "constant": true, "inputs": [{ "name": "id", "type": "uint256" }], "name": "getOffer", "outputs": [{ "name": "", "type": "uint256" }, { "name": "", "type": "address" }, { "name": "", "type": "uint256" }, { "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getLastOfferId", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "id", "type": "uint256" }], "name": "isActive", "outputs": [{ "name": "active", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "id", "type": "uint256" }], "name": "getOwner", "outputs": [{ "name": "owner", "type": "address" }], "payable": false, "type": "function" }]);
-var untitled_exchangeprotocol = untitled_exchangeprotocolContract.at("0x9646756721bf3eb9c46fdf8b19f59d9f6a29c614");
+var exchangeProtocolContract = untitled_exchangeprotocolContract.at("0x9646756721bf3eb9c46fdf8b19f59d9f6a29c614");
 
-//calling get last offer id method on contract
-untitled_exchangeprotocol.getLastOfferId(function(err, res) {
+
+
+// Get last offer id
+exchangeProtocolContract.getLastOfferId(function(err, res) {
     if (!err) {
-        console.log("Outside getlastofferid", res);
-        Session.set('getLastOfferId', res);
+        Session.set('lastOfferId', res.toNumber());
     } else {
         console.log("error", err);
     }
 });
 
-//calling isActive method on contract
-untitled_exchangeprotocol.isActive("555", function(err, res) {
+//LAST OFFER 
+// #555 isActive()
+exchangeProtocolContract.isActive(Session.get('lastOfferId'), function(err, res) {
     if (!err) {
-        console.log("Outside isActive", res);
-        Session.set('isActive', res);
+        Session.set('isActive1', res);
     } else {
         console.log("error", err);
     }
 });
 
-//calling getOffer method
-untitled_exchangeprotocol.getOffer("555", function(err, res) {
+//#555 getOwner()
+exchangeProtocolContract.getOwner("555", function(err, res) {
+    if (!err) {
+        Session.set('getOwner', res);
+    } else {
+        console.log("error", err);
+    }
+});
+
+// #555 getOffer()
+exchangeProtocolContract.getOffer("555", function(err, res) {
     if (!err) {
         console.log("Outside getOffer", res);
         Session.set('getOffer', res);
+        Session.set('buyPrice', res[2]/(Math.pow(10, 18)));
+        Session.set('sellToken', res[1]);
+        Session.set('sellPrice', res[0]/(Math.pow(10, 8)));
+
     } else {
         console.log("error", err);
     }
 });
 
-// Template.test.onCreated(function() {
-//     this.account = web3.eth.accounts;
-// });
+//instanciation of asset contract at the address of buy token to retrieve the name of token
+var untitled1_assetContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getSymbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getName","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getDecimals","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[{"name":"_name","type":"string"},{"name":"_symbol","type":"string"},{"name":"_decimals","type":"uint256"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]);
+var assetContractBuy = untitled1_assetContract.at("0xb5f354c280fe7e559237ea7b3b56ae220ef0b801");
 
-Template.test.helpers({
+assetContractBuy.name(function(err, name) {
+    Session.set('buyToken', name);
+})
+
+//instanciation of asset contract at the address of sell token
+var untitled1_assetContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getSymbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getName","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getDecimals","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[{"name":"_name","type":"string"},{"name":"_symbol","type":"string"},{"name":"_decimals","type":"uint256"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]);
+var assetContractSell = untitled1_assetContract.at("0xc652820b99552127d1e06373d8640e0f93da9477");
+
+assetContractSell.name(function(err, name) {
+    Session.set('sellToken', name);
+})
+
+
+Template.offer1.helpers({
     'account': function() {
         // return web3.eth.accounts;
         return Template.instance().account;
     },
     'exchange': function() {
-        console.log('Exchange protocol', untitled_exchangeprotocol);
-        return untitled_exchangeprotocol;
+        console.log('Exchange protocol', exchangeProtocolContract);
+        return exchangeProtocolContract;
     },
-    'getLastOfferId': function() {
-        console.log('Inside helpers GetLastOfferId with SET', Session.get('getLastOfferId'))
-        return Session.get('getLastOfferId').c[0];
+    'id': function() {
+        return Session.get('lastOfferId');
     },
     'isActive': function() {
-         console.log('Inside helpers IsActive with SET', Session.get('isActive'))
-         return Session.get('isActive');
+         return Session.get('isActive1');
+    },
+    'owner': function() {
+        return Session.get('getOwner')
     },
     'getOffer': function() {
     	console.log('Inside helpers getOffer with SET', Session.get('getOffer'));
     	return Session.get('getOffer');
+    },
+    'buyToken': function() {
+        return Session.get('buyToken');
+    },
+    'buyPrice': function() {
+        return Session.get('buyPrice');
+    },
+    'sellToken': function() {
+        return Session.get('sellToken');
+    },
+    'sellPrice': function() {
+        return Session.get('sellPrice');
     }
 })
