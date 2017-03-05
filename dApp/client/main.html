@@ -1,53 +1,12 @@
-<!-- <head> -->
-<!-- <title>dApp</title>
-</head>
-
-<body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
-  {{> info}}
-</body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template>
-
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
-</template>
- -->
-
 <head>
     <title>Melon Challenge</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
-    <h1>Welcome to the Melon challenge exchange !</h1> {{> offer1}}
+    <h1>Welcome to the Melon challenge exchange !</h1> {{> offers}}
 </body>
-<template name="offer1">
-    <h2>Order book</h2>
-    <br> Account : {{account}}
-    <br> Exchange protocol : {{exchange}}
-    <br> Get last offer id {{id}}
-    <br> IsActive ? {{isActive}}
-    <br> getOwner : {{owner1}}
-    <br> BUY : {{buyToken}}
-    <br> Buy Qty : {{buyPrice}}
-    <br> SELL : {{sellToken}}
-    <br> Sell Qty : {{sellPrice}}
-    <br>
-    <br>
-    <br>
-    <h1>Welcome to the Melon challenge exchange</h1>
+<template name="offers">
     <br>
     <br>
     <br>
@@ -58,38 +17,7 @@
     <br>
     <br>
     <br>
-    <h3>Trade</h3>
-    <p>Place your offer here :</p>
-    <div id="trade">
-        BUY
-        <form method="" action="">
-            <label for=""></label>
-            <input type="text" name="buyqty" id="buyqty" placeholder="Quantity to buy">
-        </form>
-        <select id="tokens">
-            <option>ETH</option>
-            <option>BTC</option>
-            <option>REP</option>
-            <option>EUR</option>
-        </select>
-        FOR
-        <form method="" action="">
-            <label for=""></label>
-            <input type="text" name="sellqty" id="sellqty" placeholder="Quantity to sell">
-        </form>
-        <select id="tokens">
-            <option>ETH</option>
-            <option>BTC</option>
-            <option>REP</option>
-            <option>EUR</option>
-        </select>
-        <button type="button" class="btn btn-outline-secondary" onclick="tradeFunction()">Submit my offer</button>
-    </div>
-    <br>
-    <br>
-    <br>
     <h3>Order book</h3>
-    <h1>{{isActive2}}</h1>
     <table>
         <tr>
             <th class="table">Offer ID</th>
@@ -103,7 +31,7 @@
         <tr>
             <td id="offer1id">{{lastId}} </td>
             <td id="offer1owner">{{owner1}}</td>
-            <td id="offer1active">{{isActive1}}</td>
+            <td id="offer1active">{{active1}}</td>
             <th id="offer1buy">{{buyToken}}</th>
             <th id="offer1buyprice">{{buyQty}}</th>
             <th id="offer1sell">{{sellToken}}</th>
@@ -112,11 +40,11 @@
         <tr>
             <td id="offer2id">{{secondLastId}}</td>
             <td id="offer2owner">{{owner2}}</td>
-            <td id="offer2active">{{isActive2}}</td>
-            <th id="offer2buy"></th>
-            <th id="offer2buyprice"></th>
-            <th id="offer2sell"></th>
-            <th id="offer2sellprice"></th>
+            <td id="offer2active">false</td>
+            <th id="offer2buy">N/A</th>
+            <th id="offer2buyprice">N/A</th>
+            <th id="offer2sell">N/A</th>
+            <th id="offer2sellprice">N/A</th>
         </tr>
         <tr>
             <td id="offer3id"> ###</td>
@@ -128,5 +56,13 @@
             <th id="offer3sellprice">###</th>
         </tr>
     </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 </template>
-
