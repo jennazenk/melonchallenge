@@ -29,7 +29,7 @@ exchangeProtocolContract.getLastOfferId(function(err, res) {
 
 //LAST OFFER 
 // #555 isActive()
-exchangeProtocolContract.isActive(Session.get('lastOfferId'), function(err, res) {
+exchangeProtocolContract.isActive("555", function(err, res) {
     if (!err) {
         Session.set('isActive1', res);
     } else {
